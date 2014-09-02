@@ -240,21 +240,8 @@ public abstract class Player {
 		
 		
 	}
-	
-	
-	
-	
-	
-	
+		
 
-	private boolean isWalkable(double x, double y) {
-		int x_ = (int) x;
-		int y_ = (int) y;
-		currentTiles_ = this.getCurrentTiles(x_,y_);
-		if (currentTiles_.areWalkableTiles())
-			return true;
-		return false;
-	}
 
 	public boolean isSwitchingLevel (int x, int y) {
 		currentTiles_ = this.getCurrentTiles(x,y);
