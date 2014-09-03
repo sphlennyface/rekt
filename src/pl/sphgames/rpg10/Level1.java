@@ -16,6 +16,8 @@ public class Level1 extends LevelEncoder{
 		surfaceId = 3;	
 		createWorld(wallsId, doors, surfaceId);
 		
+		new Monster();
+		
 		new Object(1,6,true,true,Action.NONE,-1,OBJECTTYPE.TREE,3);
 		
 		new Object(1,4,true,true,Action.NONE,-1,OBJECTTYPE.TREE,3);

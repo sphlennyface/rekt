@@ -13,6 +13,8 @@ public class ActionHandler {
 	public void handleActions() {
 		if (player_.isSwitchingLevel(player_.x, player_.y)) {
 			nextLevel = player_.getLastActionHelper();
+			AI.clearArray();
+			Game.clearBulletsArray();
 			changeLevel(nextLevel);
 		}
 	}

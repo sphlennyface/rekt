@@ -20,9 +20,10 @@ import javax.imageio.ImageIO;
 		private Player player;
 		public ActionHandler actionHandler;
 		private Weapon weapon;
+		private AI ai;
 		private EventHandler eventHandler;
 		private LevelManager levelManager;
-		private ArrayList<Bullet> bulletsList;
+		private static ArrayList<Bullet> bulletsList;
 		private static ArrayList<Object> objectsList;
 		private BufferedImage holder;
 		public ObjectHandler objectHandler;
@@ -60,6 +61,7 @@ import javax.imageio.ImageIO;
 	    	objectHandler = new ObjectHandler();
 	    	actionHandler = new ActionHandler();
 	    	actionHandler.passPlayer(player);
+	    	ai = new AI();
 	    	levelManager = new LevelManager();
 	    	actionHandler.passObjectHandler(objectHandler);
 	    	actionHandler.passLevelManager(levelManager);
@@ -106,9 +108,11 @@ import javax.imageio.ImageIO;
 	    public void UpdateGame(long gameTime, Point mousePosition)
 	    {
 	       world.update();
+	       ai.update();
 	       actionHandler.handleActions();
 	       eventHandler.handleEvents();
 	       player.update();
+	       
 	       updateBullets();
 	       didPlayerShoot(gameTime);
 	    }
@@ -117,6 +121,7 @@ import javax.imageio.ImageIO;
 	    public void Draw(Graphics2D g2d, Point mousePosition)
 	    {
 	    	world.draw(g2d);
+	    	ai.Draw(g2d);
 	    	crosshair.draw(g2d, mousePosition);
 	    	drawBullets(g2d);
 	    	drawObjects(g2d);  
@@ -137,6 +142,10 @@ import javax.imageio.ImageIO;
 	         {
 	             bulletsList.get(i).Draw(g2d);
 	         }
+	    }
+	    
+	    public static void clearBulletsArray() {
+	    	bulletsList.clear();
 	    }
 	    
 	    private void didPlayerShoot(long gameTime)
