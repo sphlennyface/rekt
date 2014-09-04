@@ -32,11 +32,20 @@ public class Monster {
 		private int x;
 		private int y;
 		private int target;
+		private double delay;
+		private double _endTime;
 		
 		public PatrolPoint(int x_, int y_, int target_) {
 			x = x_;
 			y = y_;
+			_endTime = 0;
+			delay = 0;
 			target = target_;
+		}
+		
+		public void setDelay(int lenght) {
+			delay = lenght;
+			_endTime = Framework.gameTime + lenght*1000000000;
 		}
 		
 		public int getX() {
@@ -140,6 +149,7 @@ public class Monster {
 		point = new PatrolPoint(1,1,1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
+		point.setDelay(100);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
 		patrolPoints.add(point);
@@ -164,13 +174,23 @@ public class Monster {
 	
 	private void patrol() {		
 		if (pX == currentTileX && pY == currentTileY) {
+			if (patrolPoints.get(currentPatrolTarget).delay != 0) {
+				
+			}
+			else {
 			currentPatrolTarget = patrolPoints.get(currentPatrolTarget).passTarget();
 			setMovementTarget(currentPatrolTarget);
+			}
 		}
+		else
+			patrolMove();
+	}
+	
+	private void patrolMove() {
 		for (int i = 0; i < monsterSpeed; i++) {
-		checkWhatever();
-		move();
-		}
+			checkWhatever();
+			move();
+			}
 	}
 	
 	private void checkWhatever() {

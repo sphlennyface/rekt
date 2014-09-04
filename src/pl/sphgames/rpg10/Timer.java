@@ -17,6 +17,8 @@ public class Timer {
 	private int _x,_y;
 	private String _text;
 	private boolean isTextFlag;
+	
+
 
 	public Timer(long gameTime, int Lenght, BufferedImage Image, int X, int Y){
 		_endTime = gameTime + Lenght*1000000000;
