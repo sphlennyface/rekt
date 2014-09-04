@@ -54,6 +54,7 @@ public class Monster {
 	}
 	
 	private int x, y, health, damage, experience;
+	private BufferedImage arrow;
 	private int monsterSpeed;
 	private int xDirection, yDirection;
 	private BufferedImage monsterImg;
@@ -101,7 +102,8 @@ public class Monster {
 	private void loadImages() {
 
     	try {
-           monsterImg = ImageIO.read(new File("monster1.png"));          
+           monsterImg = ImageIO.read(new File("monster1.png"));
+           arrow = ImageIO.read(new File("arrow.png"));
 		}
 		catch (IOException ex) {
 			Logger.getLogger(Monster.class.getName()).log(Level.SEVERE, null, ex);
@@ -239,7 +241,7 @@ public class Monster {
 	private void chase() {
 		setPlayerTarget();
 		if(changedBehavior){
-		Timer t = new Timer(Framework.gameTime,1,"AGGRO",x+(monsterImg.getWidth()/2),y+10);
+		Timer t = new Timer(Framework.gameTime,1,arrow,x+(monsterImg.getWidth()/2),y+10);
 		Game.timerList.add(t);
 		}
 		changedBehavior=false;

@@ -19,9 +19,10 @@ public class Timer {
 	private boolean isTextFlag;
 
 	public Timer(long gameTime, int Lenght, BufferedImage Image, int X, int Y){
-		_endTime = gameTime + Lenght;
-		_x = X - (_image.getWidth()/2);
-		_y = Y - (_image.getHeight()/2);
+		_endTime = gameTime + Lenght*1000000000;
+		_image = Image;
+		_x = X - (Image.getWidth()/2);
+		_y = Y - (Image.getHeight()/2);
 	}
 	public Timer(long gameTime, double Lenght, String Text, int X, int Y){
 		_endTime = gameTime + Lenght*1000000000;
