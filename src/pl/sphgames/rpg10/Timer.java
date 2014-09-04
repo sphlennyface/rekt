@@ -12,19 +12,28 @@ import javax.imageio.ImageIO;
 import pl.sphgames.rpg10.*;
 
 public class Timer {
+	private double _startTime;
 	private double _endTime;
 	private BufferedImage _image;
 	private int _x,_y;
 	private String _text;
 	private boolean isTextFlag;
 	
-
+	static public enum STATE{
+		NONEXISTING,
+		PENDING,
+		WORKING,
+		DONE
+	};
 
 	public Timer(long gameTime, int Lenght, BufferedImage Image, int X, int Y){
+		_startTime = gameTime;
 		_endTime = gameTime + Lenght*1000000000;
 		_image = Image;
 		_x = X - (Image.getWidth()/2);
 		_y = Y - (Image.getHeight()/2);
+	}
+	public Timer(){
 	}
 	public Timer(long gameTime, double Lenght, String Text, int X, int Y){
 		_endTime = gameTime + Lenght*1000000000;
@@ -33,9 +42,24 @@ public class Timer {
 		_text = Text;
 		isTextFlag = true;
 	}
+	public Timer(long gameTime, double Lenght){
+		_endTime = gameTime + Lenght*1000000000;
+	}
+	public boolean isWaiting(){
+		if(Framework.gameTime < _endTime)
+			return true;
+		else
+			return false;
+	}
+	public boolean hasAlreadyTriggered(){
+		if(Framework.gameTime > _startTime)
+			return true;
+		else
+			return false;
+	}
 	public void draw(Graphics2D g2d){
 	
-		if(Framework.gameTime <= _endTime){
+		if(this.isWaiting()){
 			if(isTextFlag){
 				g2d.setFont(new Font("TimesRoman", Font.BOLD, 30));
 				g2d.drawString(_text, _x, _y);

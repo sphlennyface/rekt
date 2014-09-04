@@ -10,6 +10,9 @@ import java.util.logging.Logger;
 import java.awt.image.BufferedImage;
 
 import javax.imageio.ImageIO;
+import javax.xml.transform.Templates;
+
+import pl.sphgames.rpg10.Timer.STATE;
 
 public class Monster {
 	
@@ -41,19 +44,22 @@ public class Monster {
 		private int y;
 		private int target;
 		private double delay;
-		private double _endTime;
+		private Timer t;
+		private Timer.STATE timerState;
+
 		
 		public PatrolPoint(int x_, int y_, int target_) {
 			x = x_;
 			y = y_;
-			_endTime = 0;
 			delay = 0;
 			target = target_;
+			timerState = STATE.NONEXISTING;
+			t = new Timer();
 		}
 		
 		public void setDelay(int lenght) {
 			delay = lenght;
-			_endTime = Framework.gameTime + lenght*1000000000;
+			timerState = STATE.PENDING;
 		}
 		
 		public int getX() {
@@ -89,7 +95,12 @@ public class Monster {
 	private int currentTileX, currentTileY;
 	private boolean changedBehavior;
 	private CURRENTBEHAVIOR lastBehavior;
+<<<<<<< HEAD
 
+=======
+	private int temp;
+	
+>>>>>>> origin/master
 	
 	private enum CURRENTBEHAVIOR {
 		CHASING,
@@ -157,19 +168,29 @@ public class Monster {
 	
 	private void setPatrolPoints() {
 		point = new PatrolPoint(1,1,1);
+		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
+<<<<<<< HEAD
 		//point.setDelay(5);
+=======
+		point.setDelay(1);
+>>>>>>> origin/master
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
+		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(5,5,4);
+		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(5,10,5);
+		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,10,6);
+		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(1,10,0);
+		point.setDelay(1);
 		patrolPoints.add(point);
 		currentPatrolTarget = patrolPoints.get(0).passTarget();
 		setMovementTarget(currentPatrolTarget);
@@ -178,14 +199,41 @@ public class Monster {
 	
 	private void putPlayerInPatrolPointOne() {
 		point = patrolPoints.get(0);
-		x = point.getX() * 64;
-		y = point.getY() * 64;
+		x = (point.getX()+1) * 64;
+		y = (point.getY()+1) * 64;
 	}
 	
 	private void patrol() {		
 		if (pX == currentTileX && pY == currentTileY) {
-			if (patrolPoints.get(currentPatrolTarget).delay != 0) {
-				
+			if (patrolPoints.get(currentPatrolTarget).timerState != STATE.NONEXISTING) {
+				switch(patrolPoints.get(currentPatrolTarget).timerState){
+				case PENDING:
+					System.out.println("PENDING");
+					patrolPoints.get(currentPatrolTarget).t= new Timer(Framework.gameTime,patrolPoints.get(currentPatrolTarget).delay);
+					patrolPoints.get(currentPatrolTarget).timerState=STATE.WORKING;
+					temp = monsterSpeed;
+					Game.timerList.add(patrolPoints.get(currentPatrolTarget).t);
+					break;
+				case WORKING:
+
+					if(patrolPoints.get(currentPatrolTarget).t.isWaiting()){
+						System.out.println("WORKING");
+						monsterSpeed=0;
+					}
+					else
+						patrolPoints.get(currentPatrolTarget).timerState=STATE.DONE;
+					
+					break;
+				case DONE:
+					monsterSpeed = temp;
+					System.out.println("DONE");
+					currentPatrolTarget = patrolPoints.get(currentPatrolTarget).passTarget();
+					setMovementTarget(currentPatrolTarget);
+					patrolPoints.get(currentPatrolTarget).timerState=STATE.PENDING;
+					break;
+					default:
+						break;
+				}
 			}
 			else {
 			currentPatrolTarget = patrolPoints.get(currentPatrolTarget).passTarget();
