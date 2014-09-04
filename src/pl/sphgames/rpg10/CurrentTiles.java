@@ -87,6 +87,32 @@ public class CurrentTiles {
 	}
 	
 	
+	public boolean areSwitchTileTiles() {
+		if (tile1_ != null) {
+			if (tile1_.getAction() == 1) {
+				return true;
+			}
+		}
+		if (tile2_ != null) {
+			if (tile2_.getAction() == 1) {
+				return true;
+			}
+		}
+		if (tile3_ != null) {
+			if (tile3_.getAction() == 1) {
+				return true;
+			}
+		}
+		if (tile4_ != null) {
+			if (tile4_.getAction() == 1) {
+				return true;
+			}
+		}		
+		
+		return false;
+	}
+
+	
 	public boolean areWalkableTiles() {
 		if (tile1_ != null) {
 			if (tile2_ != null) {

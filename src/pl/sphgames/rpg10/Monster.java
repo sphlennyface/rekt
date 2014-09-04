@@ -1,5 +1,6 @@
 package pl.sphgames.rpg10;
 import java.awt.Graphics2D;
+import java.lang.Math;
 import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
@@ -59,10 +60,12 @@ public class Monster {
 	private CURRENTBEHAVIOR behavior;
 	private MONSTERTYPE mobtype;
 	private BREED breed;
+	private boolean aggro;
 	private boolean isMovingX;
 	private PatrolPoint point;
 	private ArrayList<PatrolPoint> patrolPoints;
 	private int pX, pY;
+	private static int pX2, pY2;
 	private static int currentPatrolTarget;
 	private int currentTileX, currentTileY;
 	
@@ -75,6 +78,7 @@ public class Monster {
 	private enum MONSTERTYPE {
 		CHASER,
 		SHOOTER,
+		DISTANCER,
 		AFKER
 	};
 	
@@ -88,6 +92,7 @@ public class Monster {
 		monsterSpeed = 10;
 		xDirection = 0;
 		yDirection = 0;
+		aggro = false;
 	}
 	
 	
@@ -102,10 +107,21 @@ public class Monster {
 	}
 	
 	public void update() {
-		//behave();
+		behave();
 		updateCurrentTile();
+		switch (behavior) {
+			case CHASING:
+				chase();
+			break;
+			case PATROLLING:
+				patrol();
+			break;
+			default:
+				
+			break;
+		}
 		
-			patrol();
+			
 		
 	}
 	
@@ -157,30 +173,53 @@ public class Monster {
 			xDirection = 0; }
 		if (pY * 64 == y)
 			yDirection = 0;
-		 System.out.println("PX " + pX * 64 + " X " + x + " PY " + pY * 64 + " Y " + y);
 	}
 
 	
 	private void setMovementTarget(int cpt) {
 		point = patrolPoints.get(cpt);
-		 System.out.println("TWORZENIE NOWEGO CELU");
+		
 		pX = point.getX();
 		pY = point.getY();	
 		isMovingX = true;
-		if (pX * 64 > x){
+		if (pX * 64 > x)
 			xDirection = 1;
-		System.out.println("petla 1 bez else");}
-		else{
-			xDirection = -1;
-		System.out.println("petla 1 z else");}
 		
-		if (pY * 64 > y){
+		else
+			xDirection = -1;
+
+		
+		if (pY * 64 > y)
 			yDirection = 1;
-		System.out.println("petla 2 bez else");}
-		else{
-			yDirection = -1;
-		System.out.println("petla 2 z else");}
-		 System.out.println("YDYRECTION " + yDirection + " X DIRECTION " + xDirection);
+
+		else
+			yDirection = -1;	
+		}
+	
+	
+	
+	
+	private boolean playerIsNearby() {
+		double distance = ancientMathDudeHelpMe(x,y,Player.x,Player.y);
+		if (distance < 200) {
+			aggro = true;
+			return true;
+		}
+		return false;
+	}
+	
+	private double ancientMathDudeHelpMe(int x, int y, int x_, int y_) {
+		double res;
+		//ja pierdole co mam w mozgu
+		int odcinek1, odcinek2;
+		odcinek1 = Math.abs(y_ - y);
+		odcinek2 = Math.abs(x_ - x);
+		double odcinek1a = (double) odcinek1;
+		odcinek1a *= odcinek1a;
+		double odcinek2a = (double) odcinek2;
+		odcinek2a *= odcinek2a;
+		res = Math.sqrt(odcinek1a + odcinek2a);
+		return res;
 		
 	}
 	
@@ -194,8 +233,12 @@ public class Monster {
 	
 	
 	private void chase() {
-		getBestPath();
-		move();
+		setPlayerTarget();	
+	}
+	
+	private void setPlayerTarget() {		
+		
+		
 	}
 	
 	private void getBestPath() {
@@ -206,6 +249,16 @@ public class Monster {
 	
 	
 	public void behave() {
+		if (!aggro) {
+		if (playerIsNearby()) {
+			behavior = CURRENTBEHAVIOR.CHASING;
+			aggro = true;
+		}
+		else {
+			behavior = CURRENTBEHAVIOR.PATROLLING;	
+			
+		}
+	}
 		
 	}
 	

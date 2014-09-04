@@ -17,6 +17,7 @@ public class Crosshair {
 	public static BufferedImage crosshImg;
 	public int _x;
 	public int _y;
+	public static int middleX, middleY;
 	public Point _mousePosition;
 	public Crosshair(){
 		_x =  Framework.frameWidth/2;
@@ -33,8 +34,10 @@ public class Crosshair {
 	 
  }
  public void draw(Graphics2D g2d, Point mousePosition){
-	 _x = mousePosition.x - crosshImg.getWidth()/2;
-	 _y = mousePosition.y - crosshImg.getHeight()/2;
+	 _x = mousePosition.x;
+	 _y = mousePosition.y;
+	 middleX = _x+(crosshImg.getWidth()/2);
+	 middleY = _y+(crosshImg.getHeight()/2);
 	 _mousePosition = mousePosition;
 	 g2d.drawImage(crosshImg,_x,_y, null);
 

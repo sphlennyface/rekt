@@ -71,7 +71,7 @@ public class Framework extends Canvas {
     private final long GAME_UPDATE_PERIOD = secInNanosec / GAME_FPS;
     public static enum GameState{STARTING, VISUALIZING, GAME_CONTENT_LOADING, MAIN_MENU, OPTIONS, PLAYING, GAMEOVER, DESTROYED}
     public static GameState gameState;
-    private static long gameTime;
+    public static long gameTime;
     private static long lastTime; 
     private static MainMenu mainMenu;
     private static Game game;

@@ -1,5 +1,7 @@
 package pl.sphgames.rpg10;
 
+import javax.swing.text.NumberFormatter;
+
 public class LevelManager {
 
 	public int currentLevel;
@@ -11,9 +13,14 @@ public class LevelManager {
 	}
 	
 	public void switchLevel(int newLevel) {
+		String str = "Level " + String.valueOf(newLevel);
+		Timer t = new Timer(Framework.gameTime,2.5,str,Framework.frameWidth/2,100);
+		Game.timerList.add(t);
 		switch (newLevel) {
 			case 0:
 			new Level0();
+
+
 			break;
 			case 1:
 				new Level1();

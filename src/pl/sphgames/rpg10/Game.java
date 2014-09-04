@@ -18,9 +18,9 @@ import javax.imageio.ImageIO;
 		
 		private World world;
 		private Player player;
+		private AI ai;
 		public ActionHandler actionHandler;
 		private Weapon weapon;
-		private AI ai;
 		private EventHandler eventHandler;
 		private LevelManager levelManager;
 		private static ArrayList<Bullet> bulletsList;
@@ -30,6 +30,7 @@ import javax.imageio.ImageIO;
 		private Crosshair crosshair;
 		public enum CHARACTER {LEGOLAS, GANDALF};
 		public static CHARACTER charChosen;
+		public static ArrayList<Timer> timerList;
 
 	    public Game()
 	    {
@@ -57,11 +58,10 @@ import javax.imageio.ImageIO;
 	    		player = new Gandalf();
 	    	weapon = player.weapon;
 	    	crosshair = new Crosshair();
-	    	
+	    	ai = new AI();
 	    	objectHandler = new ObjectHandler();
 	    	actionHandler = new ActionHandler();
 	    	actionHandler.passPlayer(player);
-	    	ai = new AI();
 	    	levelManager = new LevelManager();
 	    	actionHandler.passObjectHandler(objectHandler);
 	    	actionHandler.passLevelManager(levelManager);
@@ -71,6 +71,7 @@ import javax.imageio.ImageIO;
 	    	world = new World();
 	    	
 	    	bulletsList = new ArrayList<Bullet>();
+	    	timerList = new ArrayList<Timer>();
 	    	objectsList = new ArrayList<Object>();
 	    	levelManager.switchLevel(1);
 	    	Game.getNewList(ObjectHandler.getList());
@@ -86,8 +87,8 @@ import javax.imageio.ImageIO;
 	           Bullet.bulletImgN = holder;
 	           holder = ImageIO.read(new File("bulletE.png"));
 	           Bullet.bulletImgE = holder;
-	           holder = ImageIO.read(new File("bulletW.png"));
-	           Bullet.bulletImgW = holder;
+	           holder = ImageIO.read(new File("fireball.png"));
+	           Bullet.fireball = holder;
 
 	          
 			}
@@ -112,7 +113,6 @@ import javax.imageio.ImageIO;
 	       actionHandler.handleActions();
 	       eventHandler.handleEvents();
 	       player.update();
-	       
 	       updateBullets();
 	       didPlayerShoot(gameTime);
 	    }
@@ -124,10 +124,16 @@ import javax.imageio.ImageIO;
 	    	ai.Draw(g2d);
 	    	crosshair.draw(g2d, mousePosition);
 	    	drawBullets(g2d);
-	    	drawObjects(g2d);  
+	    	drawObjects(g2d);
+	    	drawTimers(g2d);
 	    	player.draw(g2d);
 		    
 	    	 
+	    }
+	    public void drawTimers(Graphics2D g2d) {
+	    	for (int i = 0; i < timerList.size(); i++) {
+	    		timerList.get(i).draw(g2d);
+	    	}
 	    }
 	    
 	    public void drawObjects(Graphics2D g2d) {
@@ -144,10 +150,6 @@ import javax.imageio.ImageIO;
 	         }
 	    }
 	    
-	    public static void clearBulletsArray() {
-	    	bulletsList.clear();
-	    }
-	    
 	    private void didPlayerShoot(long gameTime)
 	    {
 	        if(player.hasShot(gameTime))
@@ -159,6 +161,11 @@ import javax.imageio.ImageIO;
 	            bulletsList.add(b);
 	        }
 	    }
+	    
+	    public static void clearBulletsArray() {
+	    	bulletsList.clear();
+	    }
+	    
 	    
 	    private void updateBullets() {
 	    	

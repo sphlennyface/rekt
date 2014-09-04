@@ -251,7 +251,14 @@ public abstract class Player {
 		}
 		return false;
 	}
-
+	public boolean isOnTileSwitcher (int x, int y) {
+		currentTiles_ = this.getCurrentTiles(x, y);
+		if (currentTiles_.areSwitchTileTiles()){
+			lastActionHelper = currentTiles_.getActionHelper();
+			return true;
+		}
+		return false;
+	}
 	public Event getEvent() {
 		return event_;
 	}

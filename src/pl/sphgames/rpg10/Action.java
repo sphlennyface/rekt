@@ -4,7 +4,8 @@ public enum Action {
 	NONE,
 	CHANGELEVEL,
 	DIE,
-	LOSEHEALTH;
+	LOSEHEALTH,
+	CHANGETILE;
 	
 	/*public void getAction(Action action) {
 		switch(action) {

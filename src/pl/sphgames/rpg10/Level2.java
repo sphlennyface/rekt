@@ -1,5 +1,8 @@
 package pl.sphgames.rpg10;
 
+import java.awt.Event;
+import java.io.ObjectOutputStream.PutField;
+
 import pl.sphgames.rpg10.LevelEncoder.TEXTURE;
 
 public class Level2 extends LevelEncoder{
@@ -18,8 +21,6 @@ public class Level2 extends LevelEncoder{
 		int[] doors = new int[] {0,       0,			4,			1};
 		surfaceId = 6;	
 		createWorld(wallsId, doors, surfaceId);
-		
-		
 		
 		for (int y = 2; y <= 5; y++)
 			new Object(3,y,false,false,Action.NONE,-1,OBJECTTYPE.CRATE,1);

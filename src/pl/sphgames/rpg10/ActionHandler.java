@@ -1,5 +1,13 @@
 package pl.sphgames.rpg10;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.imageio.ImageIO;
+
 public class ActionHandler {
 
 	private Player player_;
@@ -17,6 +25,9 @@ public class ActionHandler {
 			Game.clearBulletsArray();
 			changeLevel(nextLevel);
 		}
+		if (player_.isOnTileSwitcher(player_.x, player_.y)){
+			System.out.println("WBILEM");
+		}
 	}
 	
 	public void passPlayer(Player player) {
@@ -33,9 +44,11 @@ public class ActionHandler {
 	
 	
 	private void changeLevel(int level ) {
+		Game.timerList.clear();
 		objectHandler_.clearArray();
 		levelManager_.switchLevel(nextLevel);
 		Game.getNewList(objectHandler_.getList());		
 		player_.move();
+
 	}
 }

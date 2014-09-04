@@ -30,7 +30,7 @@ public class World {
 	public static Terrain[][] background;
 	
 	public BufferedImage dirtImg;
-	public BufferedImage grassImg, waterImg;
+	public static BufferedImage grassImg, waterImg;
 
 	public World() {
 
@@ -77,7 +77,7 @@ public class World {
 
 	
 	public void loadTextures() {
-	/*	try {
+		try {
 			   dirtImg = ImageIO.read(new File("dirt.jpg"));
 			   grassImg = ImageIO.read(new File("grass.jpg"));
 			   waterImg = ImageIO.read(new File("water.jpg"));
@@ -85,7 +85,7 @@ public class World {
 			}
 			catch (IOException ex) {
 				Logger.getLogger(World.class.getName()).log(Level.SEVERE, null, ex);
-			}*/
+			}
 		
 	}
 	
