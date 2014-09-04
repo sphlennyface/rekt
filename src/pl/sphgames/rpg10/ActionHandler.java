@@ -24,6 +24,7 @@ public class ActionHandler {
 			AI.clearArray();
 			Game.clearBulletsArray();
 			changeLevel(nextLevel);
+			World.createPathsArray();
 		}
 		if (player_.isOnTileSwitcher(player_.x, player_.y)){
 			System.out.println("WBILEM");

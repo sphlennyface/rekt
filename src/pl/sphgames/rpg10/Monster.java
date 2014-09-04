@@ -15,8 +15,7 @@ public class Monster {
 	
 	public Monster() {
 		behavior = CURRENTBEHAVIOR.PATROLLING;
-		patrolPoints = new ArrayList<PatrolPoint>();
-		
+		patrolPoints = new ArrayList<PatrolPoint>();		
 		loadImages();
 		createPrototype();
 		setPatrolPoints();		
@@ -26,6 +25,15 @@ public class Monster {
 	
 	private void putInAIArray() {
 		AI.putMonsterInArray(this);
+	}
+	
+	private class PathPoint {
+		private int x;
+		private int y;
+		public PathPoint(int x_, int y_) {
+			x = x_;
+			y = y_;
+		}
 	}
 	
 	private class PatrolPoint {
@@ -74,12 +82,14 @@ public class Monster {
 	private boolean isMovingX;
 	private PatrolPoint point;
 	private ArrayList<PatrolPoint> patrolPoints;
+	private ArrayList<PathPoint> pathPoints;
 	private int pX, pY;
 	private static int pX2, pY2;
 	private static int currentPatrolTarget;
 	private int currentTileX, currentTileY;
 	private boolean changedBehavior;
 	private CURRENTBEHAVIOR lastBehavior;
+
 	
 	private enum CURRENTBEHAVIOR {
 		CHASING,
@@ -101,7 +111,7 @@ public class Monster {
 	private void createPrototype() {
 		x = 110;
 		y = 550;
-		monsterSpeed = 10;
+		monsterSpeed = 4;
 		xDirection = 0;
 		yDirection = 0;
 		aggro = false;
@@ -149,7 +159,7 @@ public class Monster {
 		point = new PatrolPoint(1,1,1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
-		point.setDelay(100);
+		//point.setDelay(5);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
 		patrolPoints.add(point);
@@ -225,27 +235,25 @@ public class Monster {
 	
 	
 	
-	private boolean playerIsNearby() {
-		double distance = ancientMathDudeHelpMe(x,y,Player.x,Player.y);
-		if (distance < 200) {
+	private boolean playerIsNearby() {		
+		if (ancientMathDudeHelpMe(x,y,Player.x,Player.y) < 200) {
 			aggro = true;
 			return true;
 		}
 		return false;
 	}
 	
+	private boolean playerIsInMeleeRange() {		
+		if (ancientMathDudeHelpMe(x,y,Player.x,Player.y) < 64) {		
+			return true;
+		}
+		return false;
+	}
+	
 	private double ancientMathDudeHelpMe(int x, int y, int x_, int y_) {
-		double res;
-		//ja pierdole co mam w mozgu
-		int odcinek1, odcinek2;
-		odcinek1 = Math.abs(y_ - y);
-		odcinek2 = Math.abs(x_ - x);
-		double odcinek1a = (double) odcinek1;
-		odcinek1a *= odcinek1a;
-		double odcinek2a = (double) odcinek2;
-		odcinek2a *= odcinek2a;
-		res = Math.sqrt(odcinek1a + odcinek2a);
-		return res;
+		//all hail almighty pythagoras
+		return Math.sqrt(Math.abs(y_ - y)*Math.abs(y_ - y) + Math.abs(x_ - x)*Math.abs(x_ - x));
+	
 		
 	}
 	
@@ -258,25 +266,72 @@ public class Monster {
 	
 	
 	
-	private void chase() {
-		setPlayerTarget();
+	private void chase() {		
 		if(changedBehavior){
 		Timer t = new Timer(Framework.gameTime,1,arrow,x+(monsterImg.getWidth()/2),y+10);
 		Game.timerList.add(t);
 		}
 		changedBehavior=false;
+		
+		analyzePathArray();
+		setUpWalkingPoints();
+		moveUpToNextPoint();
+		
+	}
+	
+	private void chaseMove() {
+		if (Player.x / 64 != x / 64) {
+			for (int i = 0; i < monsterSpeed; i++)
+				x += xDirection;
+		}
+		
+		if (Player.y / 64 != y / 64) {
+			for (int i = 0; i < monsterSpeed; i++)
+				y += yDirection;
+		}
+		
 	}
 	
 	private void setPlayerTarget() {		
-		
-		
-	}
-	
-	private void getBestPath() {
 		int x_ = Player.x;
 		int y_ = Player.y;
+		
+		if (x_ > x)
+			xDirection = 1;		
+		else
+			xDirection = -1;
+
+		
+		if (y_ > y)
+			yDirection = 1;
+		else
+			yDirection = -1;	
+		
+		
 	}
 	
+	/////// WELCOME TO THE WORLD OF PATHFINDING
+	
+	
+	
+	private void analyzePathArray() {
+		int currentX = x / 64;
+		int currentY = y / 64;
+		int targetX = Player.x / 64;
+		int targetY = Player.y / 64;
+		
+	}
+	
+	private void setUpWalkingPoints() {
+		
+	}
+	
+	private void moveUpToNextPoint() {
+		
+	}
+	
+	
+	////// PLEASE COME AGAIN
 	
 	
 	public void behave() {

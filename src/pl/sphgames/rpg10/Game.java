@@ -31,6 +31,7 @@ import javax.imageio.ImageIO;
 		public enum CHARACTER {LEGOLAS, GANDALF};
 		public static CHARACTER charChosen;
 		public static ArrayList<Timer> timerList;
+		public boolean[][] pathsPossible;
 
 	    public Game()
 	    {
@@ -59,6 +60,7 @@ import javax.imageio.ImageIO;
 	    	weapon = player.weapon;
 	    	crosshair = new Crosshair();
 	    	ai = new AI();
+	    	
 	    	objectHandler = new ObjectHandler();
 	    	actionHandler = new ActionHandler();
 	    	actionHandler.passPlayer(player);

@@ -20,7 +20,7 @@ public class World {
 	private Terrain wall;
 	private static Whatever whatever;
 	private Event event_;
-	
+	public static boolean pathsPossible[][];
 	
 	
 	private int[] neighbourLevels;
@@ -46,10 +46,31 @@ public class World {
 	
 	private void initWorld() {
 		background = new Terrain[16][13];
-		
+		pathsPossible = new boolean[16][13];
 		
 	
 	}
+	
+	public static void createPathsArray() {
+		clearArray();
+		getTerrainPaths();
+	}
+	
+	private static void clearArray() {
+		for (int i = 0; i < 16; i++)
+			for (int j = 0; j < 12; j++)
+				pathsPossible[i][j] = false;
+	}
+	
+	private static void getTerrainPaths() {
+		for (int i = 0; i < 16; i++)
+			for (int j = 0; j < 12; j++) {
+				if (background[i][j].isWalkable() && background[i][j].isPassable())
+					pathsPossible[i][j] = true;
+			}
+	}
+	
+	
 	
 	public static void clearBackgroundTile(int x, int y) {
 		background[x][y] = null;
