@@ -68,6 +68,8 @@ public class Monster {
 	private static int pX2, pY2;
 	private static int currentPatrolTarget;
 	private int currentTileX, currentTileY;
+	private boolean changedBehavior;
+	private CURRENTBEHAVIOR lastBehavior;
 	
 	private enum CURRENTBEHAVIOR {
 		CHASING,
@@ -108,6 +110,8 @@ public class Monster {
 	
 	public void update() {
 		behave();
+		if(lastBehavior != behavior)
+			changedBehavior = true;
 		updateCurrentTile();
 		switch (behavior) {
 			case CHASING:
@@ -120,7 +124,7 @@ public class Monster {
 				
 			break;
 		}
-		
+		lastBehavior = behavior;
 			
 		
 	}
@@ -233,7 +237,12 @@ public class Monster {
 	
 	
 	private void chase() {
-		setPlayerTarget();	
+		setPlayerTarget();
+		if(changedBehavior){
+		Timer t = new Timer(Framework.gameTime,1,"AGGRO",x+(monsterImg.getWidth()/2),y+10);
+		Game.timerList.add(t);
+		}
+		changedBehavior=false;
 	}
 	
 	private void setPlayerTarget() {		
