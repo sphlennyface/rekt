@@ -1,5 +1,6 @@
 package pl.sphgames.rpg10;
 import java.awt.Graphics2D;
+import java.util.Collections;
 import java.lang.Math;
 import java.awt.Point;
 import java.io.File;
@@ -95,13 +96,10 @@ public class Monster {
 	private int currentTileX, currentTileY;
 	private boolean changedBehavior;
 	private CURRENTBEHAVIOR lastBehavior;
-<<<<<<< HEAD
 
-=======
 	private int temp;
 	
->>>>>>> origin/master
-	
+
 	private enum CURRENTBEHAVIOR {
 		CHASING,
 		PATROLLING,
@@ -171,11 +169,9 @@ public class Monster {
 		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
-<<<<<<< HEAD
-		//point.setDelay(5);
-=======
-		point.setDelay(1);
->>>>>>> origin/master
+
+
+
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
 		point.setDelay(1);
@@ -360,6 +356,8 @@ public class Monster {
 	
 	/////// WELCOME TO THE WORLD OF PATHFINDING
 	
+	private ArrayList closed;
+	private SortedList open;
 	
 	
 	private void analyzePathArray() {
