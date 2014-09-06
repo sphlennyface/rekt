@@ -159,7 +159,7 @@ import javax.imageio.ImageIO;
 	            Bullet.timeOfLastCreatedBullet = gameTime;
 	            weapon.currentAmmo--;
 	            
-	            Bullet b = new Bullet(player.x+7,player.y+7,weapon.damage, crosshair._mousePosition);
+	            Bullet b = new Bullet(player.x+35,player.y+35,weapon.damage, crosshair._mousePosition);
 	            bulletsList.add(b);
 	        }
 	    }

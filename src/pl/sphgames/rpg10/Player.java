@@ -205,6 +205,7 @@ public abstract class Player {
 	}
 	public void draw(Graphics2D g2d) {
 		doShit();
+		g2d.drawLine(x+35, y+35, Crosshair.middleX, Crosshair.middleY);
 		g2d.drawImage(displayedImage, x, y, null);
 		g2d.drawString("Ammo: " + weapon.getCurrentAmmo(), 5, 15);
 	}
