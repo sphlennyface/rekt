@@ -70,6 +70,13 @@ public class SplashScreen {
 		if (frames == 20 && level == true) {
 			changeLevelm8();
 		}
+		
+		 try {
+		        Thread.sleep(20);
+		    } catch (InterruptedException e) {
+
+		        e.printStackTrace();
+		    }
       
       
 	}
