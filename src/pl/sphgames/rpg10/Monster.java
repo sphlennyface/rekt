@@ -169,7 +169,13 @@ public class Monster {
 		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
+<<<<<<< HEAD
 		point.setDelay(1);
+=======
+
+		point.setDelay(1);
+
+>>>>>>> origin/master
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
 		point.setDelay(1);

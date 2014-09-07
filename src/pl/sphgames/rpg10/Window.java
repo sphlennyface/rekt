@@ -20,7 +20,7 @@ public class Window extends JFrame{
         else 
         {
         	 this.setUndecorated(true);
-            this.setSize(16 * 64 + 4, 13 * 64 - 36);
+            this.setSize(16 * 64 - 3, 13 * 64 - 66);
             this.setLocationRelativeTo(null);
             this.setResizable(false);
         }

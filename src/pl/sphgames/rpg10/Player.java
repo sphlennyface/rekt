@@ -14,6 +14,8 @@ import java.util.logging.Logger;
 
 import javax.imageio.ImageIO;
 
+import pl.sphgames.rpg10.Bullet.Face;
+
 
 
 
@@ -255,7 +257,9 @@ public abstract class Player {
 	public boolean isOnTileSwitcher (int x, int y) {
 		currentTiles_ = this.getCurrentTiles(x, y);
 		if (currentTiles_.areSwitchTileTiles()){
+			
 			lastActionHelper = currentTiles_.getActionHelper();
+			System.out.printf("action helper = " + lastActionHelper);
 			return true;
 		}
 		return false;
@@ -275,22 +279,32 @@ public abstract class Player {
 		return false;
 	}
 
-	public int getLastActionHelper() {
+	public static int getLastActionHelper() {
+		
+		System.out.printf("action helper = " + lastActionHelper);
 		return lastActionHelper;
 	}
 
 	public static void move() {
 		if (y < 2 * 64) {
+			x = Framework.frameWidth / 2 - 32;
+			Player.face = Face.NORTH;
 			y = 10 * 64;
 		}
 		else if (y > 10 * 64) {
+			x = Framework.frameWidth / 2 - 32;
+			Player.face = Face.SOUTH;
 			y = 64;
 		}
 		else if (x < 3 * 64) {
 			x = 14*64;
+			Player.face = Face.WEST;
+			y = Framework.frameHeight / 2 - 32;
 		}
 		else {
 			x = 64;
+			Player.face = Face.EAST;
+			y = Framework.frameHeight / 2 - 32;
 		}
 	}
 	

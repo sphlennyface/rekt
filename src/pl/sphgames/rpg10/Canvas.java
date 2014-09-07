@@ -21,8 +21,10 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
 	private static boolean[] mouseState = new boolean[3];
 
 	private static boolean[] keyboardState = new boolean[525];
+	public static Graphics2D g2d;
 	
 	public Canvas() {
+		
 		this.setDoubleBuffered(true);
         this.setFocusable(true);
         this.addKeyListener(this);
@@ -36,14 +38,21 @@ public abstract class Canvas extends JPanel implements KeyListener, MouseListene
 		
 	}
 	
+	
+	
     public abstract void Draw(Graphics2D g2d);
     
     @Override
     public void paintComponent(Graphics g)
     {
-        Graphics2D g2d = (Graphics2D)g;        
+        Graphics2D g2d = (Graphics2D)g; 
+       
         super.paintComponent(g2d);        
         Draw(g2d);
+    }
+    
+    public static Graphics2D giveTheGraphicsFag() {
+    	return g2d;
     }
     
     public static boolean keyboardKeyState(int key)

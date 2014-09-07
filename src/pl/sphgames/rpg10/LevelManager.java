@@ -13,6 +13,7 @@ public class LevelManager {
 	}
 	
 	public void switchLevel(int newLevel) {
+		System.out.printf("newLevel newLevel = " + newLevel);
 		String str = "Level " + String.valueOf(newLevel);
 		Timer t = new Timer(Framework.gameTime,2.5,str,Framework.frameWidth/2,100);
 		Game.timerList.add(t);
