@@ -98,7 +98,10 @@ public class Monster {
 	private CURRENTBEHAVIOR lastBehavior;
 
 	private int temp;
+<<<<<<< HEAD
 	
+=======
+>>>>>>> origin/master
 
 	private enum CURRENTBEHAVIOR {
 		CHASING,
@@ -169,9 +172,13 @@ public class Monster {
 		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
+<<<<<<< HEAD
 
 
 
+=======
+		point.setDelay(1);
+>>>>>>> origin/master
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
 		point.setDelay(1);
@@ -204,7 +211,6 @@ public class Monster {
 			if (patrolPoints.get(currentPatrolTarget).timerState != STATE.NONEXISTING) {
 				switch(patrolPoints.get(currentPatrolTarget).timerState){
 				case PENDING:
-					System.out.println("PENDING");
 					patrolPoints.get(currentPatrolTarget).t= new Timer(Framework.gameTime,patrolPoints.get(currentPatrolTarget).delay);
 					patrolPoints.get(currentPatrolTarget).timerState=STATE.WORKING;
 					temp = monsterSpeed;
@@ -213,7 +219,6 @@ public class Monster {
 				case WORKING:
 
 					if(patrolPoints.get(currentPatrolTarget).t.isWaiting()){
-						System.out.println("WORKING");
 						monsterSpeed=0;
 					}
 					else
@@ -222,7 +227,6 @@ public class Monster {
 					break;
 				case DONE:
 					monsterSpeed = temp;
-					System.out.println("DONE");
 					currentPatrolTarget = patrolPoints.get(currentPatrolTarget).passTarget();
 					setMovementTarget(currentPatrolTarget);
 					patrolPoints.get(currentPatrolTarget).timerState=STATE.PENDING;

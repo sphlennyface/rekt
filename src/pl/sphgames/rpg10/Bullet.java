@@ -1,9 +1,11 @@
 package pl.sphgames.rpg10;
 
 import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
 
 
@@ -22,6 +24,8 @@ public class Bullet {
 	private int i;
 	private AffineTransformOp atop;
 	private AffineTransform at;
+	private double middleX, middleY;
+	Point2D.Double point;
 
 
 
@@ -47,11 +51,11 @@ public class Bullet {
 		this.trajectory[0][1] = (int)x;
 		this.trajectory[1][1] = (int)y;
 		this._angle = 0;
-		bulletSpeed = 5;
+		bulletSpeed = 10;
 		setBulletVector(trajectory);
-
-		System.out.printf("%f\n",_angle);
-
+		middleX = this.x  + (bulletImg.getWidth()/2) + (bulletImg.getWidth()/2 * Math.cos(Math.toRadians(_angle)));// ((bulletImg.getWidth()/4)  * Math.cos(Math.toRadians(_angle)))
+		middleY = this.y + (bulletImg.getHeight()/2) - (bulletImg.getHeight()/2 * Math.sin(Math.toRadians(_angle)));// ((bulletImg.getHeight()/4) * Math.sin(Math.toRadians(_angle)))
+		System.out.printf("ANGLE = %f   X = %f Y=%f   XM = %f YM = %f\n",_angle,x,y,middleX,middleY);
 
 	}
 
@@ -77,6 +81,8 @@ public class Bullet {
 	public void update() {
 		x += movingXSpeed;
 		y += movingYSpeed;
+		middleX += movingXSpeed;
+		middleY += movingYSpeed;
 	}
 
 	public boolean isItLeftScreen() {
@@ -100,8 +106,10 @@ public class Bullet {
 			yH = yH + (bulletImg.getWidth());
 			xH = xH + (bulletImg.getHeight());
 		}
-			if ( (xH > destinationX-(bulletImg.getWidth()) && xH < destinationX+(bulletImg.getWidth())) && (yH > destinationY-(bulletImg.getHeight()) && yH < destinationY+(bulletImg.getHeight())))
-				return true;
+//			if ( (xH > destinationX-(bulletImg.getWidth()) && xH < destinationX+(bulletImg.getWidth())) && (yH > destinationY-(bulletImg.getHeight()) && yH < destinationY+(bulletImg.getHeight())))
+//				return true;
+		if ( (middleX > destinationX-5) && (middleX < destinationX+5) && (middleY > destinationY-5) && (middleY < destinationY+5))
+			return true;
 
 				
 		if (xH2 > 15 || yH2 > 11)
@@ -114,9 +122,12 @@ public class Bullet {
 
 	public void Draw(Graphics2D g2d)
 	{
-		at = AffineTransform.getRotateInstance(Math.toRadians(-_angle + 180),bulletImg.getHeight()/2,bulletImg.getWidth()/2);
+		at = AffineTransform.getRotateInstance(Math.toRadians(-_angle),bulletImg.getHeight()/2,bulletImg.getWidth()/2);
 		atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 		g2d.drawImage(atop.filter(bulletImg, null), (int)x, (int)y, null);
+		g2d.setColor(Color.RED);
+		g2d.drawOval((int)middleX,(int)middleY,2,2);
+		g2d.setColor(Color.BLACK);
 	}
 
 }
