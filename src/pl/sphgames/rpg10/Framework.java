@@ -177,6 +177,11 @@ public class Framework extends Canvas {
     }
     
 
+    public static void fade(Graphics2D g2d) {
+    	
+    }
+    
+    
     @Override
     public void Draw(Graphics2D g2d)
     {
@@ -184,7 +189,7 @@ public class Framework extends Canvas {
         {
             case PLAYING:
                 game.Draw(g2d, mousePosition());
-            break;
+            break;         
             case GAMEOVER:
                 //...
             break;

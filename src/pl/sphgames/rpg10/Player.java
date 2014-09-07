@@ -255,7 +255,9 @@ public abstract class Player {
 	public boolean isOnTileSwitcher (int x, int y) {
 		currentTiles_ = this.getCurrentTiles(x, y);
 		if (currentTiles_.areSwitchTileTiles()){
+			
 			lastActionHelper = currentTiles_.getActionHelper();
+			System.out.printf("action helper = " + lastActionHelper);
 			return true;
 		}
 		return false;
@@ -275,7 +277,9 @@ public abstract class Player {
 		return false;
 	}
 
-	public int getLastActionHelper() {
+	public static int getLastActionHelper() {
+		
+		System.out.printf("action helper = " + lastActionHelper);
 		return lastActionHelper;
 	}
 
