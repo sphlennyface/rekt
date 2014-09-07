@@ -23,6 +23,7 @@ public class SplashScreen {
 		level = levSwitch;
 		ah_ = ah;
 		alpha = alpha_;
+		tempAlpha = alpha_;
 		Game.addFuckingSplash(this);
 	}
 	
@@ -39,6 +40,8 @@ public class SplashScreen {
     	
     	g2d.setColor(Color.black);
     	g2d.fillRect(0, 0, Framework.frameWidth, Framework.frameHeight);
+    	g2d.setComposite(AlphaComposite.getInstance(
+                AlphaComposite.SRC_OVER, 1.0f));
 	}
 	
 	private void changeLevelm8() {
