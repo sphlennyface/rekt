@@ -6,7 +6,7 @@ import java.awt.Graphics2D;
 
 public class AI {
 
-	private static ArrayList<Monster> monsterList;
+	public static ArrayList<Monster> monsterList;
 	
 	public AI() {
 		monsterList = new ArrayList<Monster>();

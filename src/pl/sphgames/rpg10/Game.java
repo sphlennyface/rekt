@@ -184,15 +184,13 @@ import javax.imageio.ImageIO;
 
 	    public void Draw(Graphics2D g2d, Point mousePosition)
 	    {
-	    	
+
 	    	world.draw(g2d);
 	    	ai.Draw(g2d);
 	    	crosshair.draw(g2d, mousePosition);
 	    	drawBullets(g2d);
 	    	drawObjects(g2d);
 	    	drawTimers(g2d);
-	    	
-	    	
 	    	drawFuckingSplashScreen(g2d);
 	    	player.draw(g2d);
 	    	
@@ -271,7 +269,7 @@ import javax.imageio.ImageIO;
 	               continue;
 	            }
 	            
-	            if (bullet.hitUnpassable(bullet.x, bullet.y)) {
+	            if (bullet.hitUnpassable(ai.monsterList)) {
 	            	bulletsList.remove(i);
 	            	continue;
 	            }

@@ -7,11 +7,14 @@ import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.AffineTransformOp;
+import java.util.ArrayList;
 
 
 public class Bullet {
 	private double bulletSpeed;
 	public double x, y;
+	private double middleX, middleY;
+	private int currentXTile, currentYTile;
 	private int damagePower;
 	private double movingXSpeed, movingYSpeed;
 	public static BufferedImage bulletImgN, bulletImgE, fireball, bulletImgS;
@@ -21,20 +24,15 @@ public class Bullet {
 	private int[][] trajectory;
 	private int destinationX, destinationY;
 	private double _angle;
-	private int i;
 	private AffineTransformOp atop;
 	private AffineTransform at;
-	private double middleX, middleY;
-	Point2D.Double point;
+	private Explosion explo;
 
 
-
-	public enum Face {
-		NORTH,
-		EAST,
-		WEST,
-		SOUTH
-	};
+	public Point2D getCurrentLocation(){
+		Point p = new Point((int)middleX,(int)middleY);
+		return p;
+	}
 
 
 	public Bullet(double x, double y, int dmg, Point mousePosition)
@@ -55,8 +53,8 @@ public class Bullet {
 		setBulletVector(trajectory);
 		middleX = this.x  + (bulletImg.getWidth()/2) + (bulletImg.getWidth()/2 * Math.cos(Math.toRadians(_angle)));// ((bulletImg.getWidth()/4)  * Math.cos(Math.toRadians(_angle)))
 		middleY = this.y + (bulletImg.getHeight()/2) - (bulletImg.getHeight()/2 * Math.sin(Math.toRadians(_angle)));// ((bulletImg.getHeight()/4) * Math.sin(Math.toRadians(_angle)))
-		System.out.printf("ANGLE = %f   X = %f Y=%f   XM = %f YM = %f\n",_angle,x,y,middleX,middleY);
-
+		currentXTile = (int)middleX / 64;
+		currentYTile = (int)middleY / 64;
 	}
 
 
@@ -83,6 +81,8 @@ public class Bullet {
 		y += movingYSpeed;
 		middleX += movingXSpeed;
 		middleY += movingYSpeed;
+		currentXTile = (int)middleX / 64;
+		currentYTile = (int)middleY / 64;
 	}
 
 	public boolean isItLeftScreen() {
@@ -92,31 +92,26 @@ public class Bullet {
 			return true;
 	}
 
-	public boolean hitUnpassable(double x, double y) {
-		double xH, yH;
-		yH = y;
-		xH = x;
-
-		int xH2, yH2;
-
-		xH2 = (int) xH / 64;
-		yH2 = (int) yH / 64;
-		if((_angle >0 && _angle<50) || _angle < -150 )
-		{
-			yH = yH + (bulletImg.getWidth());
-			xH = xH + (bulletImg.getHeight());
+	public boolean hitUnpassable(ArrayList<Monster> aiList) {
+		
+		if ( (middleX > destinationX-5) && (middleX < destinationX+5) && (middleY > destinationY-5) && (middleY < destinationY+5)){
+			explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
+			return true;
 		}
-//			if ( (xH > destinationX-(bulletImg.getWidth()) && xH < destinationX+(bulletImg.getWidth())) && (yH > destinationY-(bulletImg.getHeight()) && yH < destinationY+(bulletImg.getHeight())))
-//				return true;
-		if ( (middleX > destinationX-5) && (middleX < destinationX+5) && (middleY > destinationY-5) && (middleY < destinationY+5))
-			return true;
-
+		for(int i=0;i<aiList.size();i++){
+				if(aiList.get(i).isMonsterHit(this)){
+					explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
+					return true;
+				}
+		}
 				
-		if (xH2 > 15 || yH2 > 11)
+		if (currentXTile > 14 || currentYTile > 10){
+			explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
 			return true;
-		if (World.background[xH2][yH2].isPassable())		
+		}
+		if (World.background[currentXTile][currentYTile].isPassable())		
 			return false;
-
+		explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
 		return true;
 	}
 
@@ -125,9 +120,7 @@ public class Bullet {
 		at = AffineTransform.getRotateInstance(Math.toRadians(-_angle),bulletImg.getHeight()/2,bulletImg.getWidth()/2);
 		atop = new AffineTransformOp(at, AffineTransformOp.TYPE_BILINEAR);
 		g2d.drawImage(atop.filter(bulletImg, null), (int)x, (int)y, null);
-		g2d.setColor(Color.RED);
-		g2d.drawOval((int)middleX,(int)middleY,2,2);
-		g2d.setColor(Color.BLACK);
+
 	}
 
 }
