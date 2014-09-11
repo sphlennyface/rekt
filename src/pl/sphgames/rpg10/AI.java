@@ -7,9 +7,16 @@ import java.awt.Graphics2D;
 public class AI {
 
 	public static ArrayList<Monster> monsterList;
+	public static PathFinder pathFinder;
 	
 	public AI() {
 		monsterList = new ArrayList<Monster>();
+		pathFinder = new PathFinder();
+	}
+	
+	public static void setAggro() {
+		for (int i = 0; i < monsterList.size(); i++)
+			monsterList.get(i).setAggro();
 	}
 	
 	public static void putMonsterInArray(Monster mob) {

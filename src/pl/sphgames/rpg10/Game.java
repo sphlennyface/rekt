@@ -63,6 +63,8 @@ import javax.imageio.ImageIO;
 	
 	    private void Initialize()
 	    {
+	    	world = new World();
+		    
 	    	if(Game.charChosen == CHARACTER.LEGOLAS)
 	    		player = new Legolas();
 	    	else
@@ -82,7 +84,6 @@ import javax.imageio.ImageIO;
 	    	eventHandler = new EventHandler();
 	    	eventHandler.passPlayer(player);
 	    	player.passEventHandler(eventHandler);
-	    	world = new World();
 	    	alpha = 0.0f;
 	    	bulletsList = new ArrayList<Bullet>();
 	    	splash = new ArrayList<SplashScreen>();
@@ -191,12 +192,10 @@ import javax.imageio.ImageIO;
 	    	drawBullets(g2d);
 	    	drawObjects(g2d);
 	    	drawTimers(g2d);
-<<<<<<< HEAD
+
 	    	player.draw(g2d);
 	    	
 	    	
-=======
->>>>>>> origin/master
 	    	drawFuckingSplashScreen(g2d);
 	    
 	    	 

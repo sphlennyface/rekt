@@ -24,7 +24,7 @@ public class Level1 extends LevelEncoder{
 		
 		new Object(13,6,true,true,Action.NONE,-1,OBJECTTYPE.TREE,3);
 		
-		new Monster();
+		//new Monster();
 		
 		new Object(13,4,true,true,Action.NONE,-1,OBJECTTYPE.TREE,3);
 		

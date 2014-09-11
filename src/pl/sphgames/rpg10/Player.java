@@ -54,7 +54,15 @@ public abstract class Player {
 		center = 64 / 2;
 	}
 
-
+	public static int getPlayerTileX() {
+		return x / 64;
+	}
+	
+	public static int getPlayerTileY() {
+		return y / 64;
+	}
+	
+	
 	public void createNewPlayer(){};
 
 	public void loadImages(){};
@@ -407,6 +415,11 @@ public abstract class Player {
 					if (newIsWalkable(x + 1, y))
 						x += 1;
 				isMoving = true;
+			}
+
+			if(Canvas.keyboardKeyState(KeyEvent.VK_F)) {
+				
+				AI.setAggro();
 			}
 
 			if(Canvas.keyboardKeyState(KeyEvent.VK_A)) {

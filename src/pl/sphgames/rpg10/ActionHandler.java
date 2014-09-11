@@ -69,10 +69,10 @@ public class ActionHandler {
 		Game.clearBulletsArray();
 		AI.clearArray();
 		System.out.printf("level level = " + level);
-		World.createPathsArray();
 		Game.timerList.clear();
 		objectHandler_.clearArray();
 		levelManager_.switchLevel(level);
+		World.createPathsArray();		
 		Game.getNewList(objectHandler_.getList());		
 		player_.move();
 

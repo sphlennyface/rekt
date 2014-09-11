@@ -46,9 +46,19 @@ public class World {
 	
 	private void initWorld() {
 		background = new Terrain[16][13];
-		pathsPossible = new boolean[16][13];
-		
+		pathsPossible = new boolean[16][13];	
+	}
 	
+	public static boolean[][] getPathsArray() {
+		return pathsPossible;
+	}
+	
+	public static int getMapX() {
+		return 16;
+	}
+	
+	public static int getMapY() {
+		return 13;
 	}
 	
 	public static void createPathsArray() {
@@ -65,9 +75,23 @@ public class World {
 	private static void getTerrainPaths() {
 		for (int i = 0; i < 16; i++)
 			for (int j = 0; j < 12; j++) {
-				if (background[i][j].isWalkable() && background[i][j].isPassable())
+				if (background[i][j].isWalkable())
 					pathsPossible[i][j] = true;
 			}
+	}
+	
+	public static void printArray() {
+		createPathsArray();
+		System.out.printf("\n");
+		for (int i = 0; i < 16; i++){
+			for (int j = 0; j < 12; j++) {
+				if (pathsPossible[i][j] == true)
+					System.out.printf("1 ");
+				else
+					System.out.printf("0 ");
+			}
+			System.out.printf("\n");
+		}
 	}
 	
 	

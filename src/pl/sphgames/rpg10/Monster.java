@@ -17,13 +17,36 @@ import javax.xml.transform.Templates;
 import pl.sphgames.rpg10.Timer.STATE;
 
 public class Monster {
+
+	private int x, y, health, damage, experience;
+	private BufferedImage arrow;
+	private int monsterSpeed;
+	private int xDirection, yDirection;
+	private BufferedImage monsterImg;
+	private static CURRENTBEHAVIOR behavior;
+	private MONSTERTYPE mobtype;
+	private BREED breed;
+	private static boolean aggro;
+	private boolean isMovingX;
+	private PatrolPoint point;
+	private ArrayList<PatrolPoint> patrolPoints;
+	private ArrayList<PathPoint> pathPoints;
+	private int pX, pY;
+	private static int currentPatrolTarget;
+	private static int currentTileX, currentTileY;
+	private boolean changedBehavior;
+	private CURRENTBEHAVIOR lastBehavior;
+	private int widthHitBox, heightHitBox;
+	private int temp;
+	private static Path currentPath;
 	
 	public Monster() {
 		behavior = CURRENTBEHAVIOR.PATROLLING;
 		patrolPoints = new ArrayList<PatrolPoint>();		
 		loadImages();
 		createPrototype();
-		setPatrolPoints();		
+		setPatrolPoints();	
+		System.out.printf("\nhehe");
 		putPlayerInPatrolPointOne();
 		putInAIArray();
 		widthHitBox = 45;
@@ -87,27 +110,6 @@ public class Monster {
 		
 	}
 	
-	private int x, y, health, damage, experience;
-	private BufferedImage arrow;
-	private int monsterSpeed;
-	private int xDirection, yDirection;
-	private BufferedImage monsterImg;
-	private CURRENTBEHAVIOR behavior;
-	private MONSTERTYPE mobtype;
-	private BREED breed;
-	private boolean aggro;
-	private boolean isMovingX;
-	private PatrolPoint point;
-	private ArrayList<PatrolPoint> patrolPoints;
-	private ArrayList<PathPoint> pathPoints;
-	private int pX, pY;
-	private static int currentPatrolTarget;
-	private int currentTileX, currentTileY;
-	private boolean changedBehavior;
-	private CURRENTBEHAVIOR lastBehavior;
-	private int widthHitBox, heightHitBox;
-
-	private int temp;
 
 	public boolean isMonsterHit(Bullet b){
 		if(new Rectangle(x+(monsterImg.getWidth()/2-widthHitBox/2),y+(monsterImg.getHeight() - heightHitBox),widthHitBox,heightHitBox).contains(b.getCurrentLocation()))
@@ -134,7 +136,7 @@ public class Monster {
 	private void createPrototype() {
 		x = 110;
 		y = 550;
-		monsterSpeed = 4;
+		monsterSpeed = 3;
 		xDirection = 0;
 		yDirection = 0;
 		aggro = false;
@@ -159,7 +161,7 @@ public class Monster {
 		updateCurrentTile();
 		switch (behavior) {
 			case CHASING:
-				chase();
+			chase();
 			break;
 			case PATROLLING:
 				patrol();
@@ -287,11 +289,15 @@ public class Monster {
 		}
 	
 	
-	
+	public static void setAggro() {
+		aggro = true;
+		behavior = CURRENTBEHAVIOR.CHASING;
+		analyzePathArray();
+	}
 	
 	private boolean playerIsNearby() {		
 		if (ancientMathDudeHelpMe(x,y,Player.x,Player.y) < 200) {
-			aggro = true;
+			setAggro();
 			return true;
 		}
 		return false;
@@ -312,9 +318,9 @@ public class Monster {
 	}
 	
 	private void move() {
-		if (isMovingX)
+		//if (isMovingX)
 		x += xDirection;
-		else
+	//	else
 		y += yDirection;
 	}
 	
@@ -326,56 +332,32 @@ public class Monster {
 		Game.timerList.add(t);
 		}
 		changedBehavior=false;
+		System.out.printf("czejsuje\n");
 		
-		analyzePathArray();
-		setUpWalkingPoints();
-		moveUpToNextPoint();
+		if (currentPath == null)
+			wyjebSiê();
 		
-	}
-	
-	private void chaseMove() {
-		if (Player.x / 64 != x / 64) {
-			for (int i = 0; i < monsterSpeed; i++)
-				x += xDirection;
+		else if (currentTileX == Player.getPlayerTileX() && currentTileY == Player.getPlayerTileY())
+			wyjebSiê();
+		else if ( (currentTileX == currentPath.getNextTileX()) ||  (currentTileY == currentPath.getNextTileX())) {
+			System.out.printf("o chuj, dojsz³em na tile, czas na nowe doznania xD\n");
+			analyzePathArray();
+			moveUpToNextPoint();
 		}
-		
-		if (Player.y / 64 != y / 64) {
-			for (int i = 0; i < monsterSpeed; i++)
-				y += yDirection;
-		}
-		
-	}
-	
-	private void setPlayerTarget() {		
-		int x_ = Player.x;
-		int y_ = Player.y;
-		
-		if (x_ > x)
-			xDirection = 1;		
 		else
-			xDirection = -1;
-
-		
-		if (y_ > y)
-			yDirection = 1;
-		else
-			yDirection = -1;	
-		
-		
+			moveUpToNextPoint();
 	}
-	
-	/////// WELCOME TO THE WORLD OF PATHFINDING
-	
-	private ArrayList closed;
-	//private SortedList open;
-	
-	
-	private void analyzePathArray() {
-		int currentX = x / 64;
-		int currentY = y / 64;
-		int targetX = Player.x / 64;
-		int targetY = Player.y / 64;
 		
+	
+	
+	private static void analyzePathArray() {
+		System.out.printf("analizuje xD\n");
+		currentPath.clearPath();
+		currentPath = AI.pathFinder.findPath(currentTileX, currentTileY, Player.getPlayerTileX(), Player.getPlayerTileY());	
+		if (currentPath == null)
+			System.out.printf("gracz ty chuju, tam nie moge dojsc :(\n");
+		else
+		System.out.printf("Po analizie wnioskuje ze musze dojsc z X " + currentTileX + " Y  " + currentTileY + " do X " + currentPath.getNextTileX() + " Y " + currentPath.getNextTileY() + " !\n");
 	}
 	
 	private void setUpWalkingPoints() {
@@ -383,24 +365,54 @@ public class Monster {
 	}
 	
 	private void moveUpToNextPoint() {
-		
+		System.out.printf("im tryin \n");
+		if (!(currentPath == null))
+		chaseMove(currentPath.getNextTileX(),currentPath.getNextTileY());
 	}
 	
+	private void wyjebSiê() {
+		System.out.printf("wyjebane\n");
+	}
+	
+	private void chaseMove(int x, int y) {
+		
+		System.out.printf("musze pocisn¹æ z X " + currentTileX + " Y " + currentTileY + " do X " + x + " Y " + y + " !\n");
+		
+		System.out.printf("probuje zapierdalac\n");
+		if (currentTileX > x)
+			xDirection = -1;
+		else if (currentTileX < x)
+			xDirection = 1;
+		else
+			xDirection = 0;
+		
+		if (currentTileY > y)
+			yDirection = -1;
+		else if (currentTileY < y)
+			yDirection = 1;
+		else
+			yDirection = 0;
+		
+		
+		System.out.printf("wyglada na to, ze xDirection wynosi " + xDirection + " a yDirection " + yDirection + "\n no to ruszamy!\n");
+		move();
+		
+	}
 	
 	////// PLEASE COME AGAIN
 	
 	
 	public void behave() {
 		if (!aggro) {
-		if (playerIsNearby()) {
-			behavior = CURRENTBEHAVIOR.CHASING;
-			aggro = true;
+			if (playerIsNearby()) {
+				behavior = CURRENTBEHAVIOR.CHASING;
+				aggro = true;
+			}
+			else {
+				behavior = CURRENTBEHAVIOR.PATROLLING;	
+
+			}
 		}
-		else {
-			behavior = CURRENTBEHAVIOR.PATROLLING;	
-			
-		}
-	}
 		
 	}
 	
@@ -408,7 +420,7 @@ public class Monster {
 	
 	public void Draw(Graphics2D g2d) {
 		g2d.drawImage(monsterImg, x, y, null);
-		g2d.drawRect(x+(monsterImg.getWidth()/2-widthHitBox/2),y+(monsterImg.getHeight() - heightHitBox),widthHitBox,heightHitBox);
+		//g2d.drawRect(x+(monsterImg.getWidth()/2-widthHitBox/2),y+(monsterImg.getHeight() - heightHitBox),widthHitBox,heightHitBox);
 //		g2d.drawRect(x,y,widthHitBox,heightHitBox);
 
 	}

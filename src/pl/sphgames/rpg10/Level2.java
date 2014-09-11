@@ -30,7 +30,7 @@ public class Level2 extends LevelEncoder{
 		
 		createTerrain(4,4,4,4,false,true,Action.NONE,-1,1,TEXTURE.WATER);
 		
-
+		new Monster();
 		
 		
 	}
