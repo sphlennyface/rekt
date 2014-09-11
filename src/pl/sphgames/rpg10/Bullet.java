@@ -93,28 +93,36 @@ public class Bullet {
 	}
 
 	public boolean hitUnpassable(ArrayList<Monster> aiList) {
-		
+
 		if ( (middleX > destinationX-5) && (middleX < destinationX+5) && (middleY > destinationY-5) && (middleY < destinationY+5)){
 			explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
+			dealDmg();
 			return true;
 		}
 		for(int i=0;i<aiList.size();i++){
-				if(aiList.get(i).isMonsterHit(this)){
-					explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
-					return true;
-				}
+			if(aiList.get(i).isMonsterHit(this)){
+				explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
+				dealDmg();
+				return true;
+			}
 		}
-				
+
 		if (currentXTile > 14 || currentYTile > 10){
 			explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
+			dealDmg();
 			return true;
 		}
 		if (World.background[currentXTile][currentYTile].isPassable())		
 			return false;
 		explo = new Explosion(0.5,damagePower,currentXTile,currentYTile,1);
+		dealDmg();
 		return true;
 	}
-
+	public void dealDmg(){
+		for(int i=0;i<AI.monsterList.size();i++){
+			AI.monsterList.get(i).checkDamage(explo, damagePower);
+		}
+	}
 	public void Draw(Graphics2D g2d)
 	{
 		at = AffineTransform.getRotateInstance(Math.toRadians(-_angle),bulletImg.getHeight()/2,bulletImg.getWidth()/2);
