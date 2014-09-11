@@ -192,10 +192,16 @@ import javax.imageio.ImageIO;
 	    	drawBullets(g2d);
 	    	drawObjects(g2d);
 	    	drawTimers(g2d);
+<<<<<<< HEAD
 
 	    	player.draw(g2d);
 	    	
 	    	
+=======
+	    	player.draw(g2d);
+	    	
+	    
+>>>>>>> 15fc2fbcb6888b3aac3fcdaf3b06d17713a1e787
 	    	drawFuckingSplashScreen(g2d);
 	    
 	    	 

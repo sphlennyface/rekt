@@ -28,15 +28,18 @@ public class Gandalf extends Player {
 		while (y % 64 != 0)
 			y--;
 		level = 1;
-		health = 150;
+		maxHealth = 150;
+		maxMana = 100;
+		currentHealth = maxHealth;
+		currentMana = maxMana;
 		experience = 0;
 		playerSize = 10;
 		stamina = 150;
+
 		playerSpeed = (level / 5 ) + 4;
 		face = Face.EAST;
 		generator = new Random();
 		frameDuration = 15;
-
 	}
 	
 	@Override
