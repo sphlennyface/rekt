@@ -47,8 +47,6 @@ public abstract class Player {
 		WEST,
 		SOUTH
 	};
-	private Rectangle hpBar;
-	private Rectangle mpBar;
 	
 	public Player() {
 		createNewPlayer();
@@ -219,15 +217,27 @@ public abstract class Player {
 		g2d.drawLine(x+35, y+35, Crosshair.middleX, Crosshair.middleY);
 		g2d.drawImage(displayedImage, x, y, null);
 		g2d.drawString("Ammo: " + weapon.getCurrentAmmo(), 5, 15);
-		g2d.drawRect(50, 10, (int) (100*((float)maxHealth/currentHealth)), 10);
+		g2d.setColor(Color.RED);
+		g2d.drawRect(50, 10,250, 10);
+		g2d.fillRect(50, 10, (int) (250*((float)currentHealth/maxHealth)), 10);
+
+		g2d.setColor(Color.BLUE);
+
+		g2d.fillRect(50, 25, (int) (250*((float)currentMana/maxMana)), 10);
+		g2d.drawRect(50, 25,250, 10);
+		g2d.setColor(Color.BLACK);
 	}
 
 	public void update()
 	{
 		handleMovement();
 		weapon.update();
+		killurself();
 	}
-
+	public void killurself(){
+		if(currentHealth > 0 && currentHealth <= maxHealth)
+			currentHealth--;
+	}
 	public void passEventHandler(EventHandler eventHandler) {
 		eventHandler_ = eventHandler;
 	}
