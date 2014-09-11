@@ -4,6 +4,7 @@ import java.io.File;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -20,7 +21,7 @@ import javax.imageio.ImageIO;
 public abstract class Player {
 
 	protected Weapon weapon;
-	protected int level, health, experience;
+	protected float level, currentHealth,currentMana , experience, maxHealth, maxMana;
 	public static int x, y;
 	protected double playerSpeed;
 	protected BufferedImage playerImgN1, playerImgN2, playerImgE1, playerImgE2, playerImgW1, playerImgW2, playerImgS1, playerImgS2, displayedImage;
@@ -46,7 +47,9 @@ public abstract class Player {
 		WEST,
 		SOUTH
 	};
-
+	private Rectangle hpBar;
+	private Rectangle mpBar;
+	
 	public Player() {
 		createNewPlayer();
 		loadImages();
@@ -208,6 +211,7 @@ public abstract class Player {
 		g2d.drawLine(x+35, y+35, Crosshair.middleX, Crosshair.middleY);
 		g2d.drawImage(displayedImage, x, y, null);
 		g2d.drawString("Ammo: " + weapon.getCurrentAmmo(), 5, 15);
+		g2d.drawRect(50, 10, (int) (100*((float)maxHealth/currentHealth)), 10);
 	}
 
 	public void update()
