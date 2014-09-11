@@ -15,6 +15,7 @@ public class Explosion{
 	public static BufferedImage explosionImg;
 	private boolean[] show;
 
+
 	public Explosion(double lenght, int damage, int X, int Y, int radius){
 		_radius = radius;
 		_currentXTile = X;
@@ -43,6 +44,15 @@ public class Explosion{
 			Game.timerList.add(_graphicsArray[i]);
 			j++;
 		}
-		
+
+		}
+	public int getXTile(){
+		return _currentXTile;
+	}
+	public int getYTile(){
+		return _currentYTile;
+	}
+	public int getRadius(){
+		return _radius;
 	}
 }

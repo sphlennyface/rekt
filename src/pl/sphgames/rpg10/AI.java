@@ -22,7 +22,7 @@ public class AI {
 	public static void putMonsterInArray(Monster mob) {
 		monsterList.add(mob);
 	}
-	
+
 	public static void clearArray() {
 		monsterList.clear();
 	}
@@ -30,6 +30,8 @@ public class AI {
 	public void update() {
 		for (int i = 0; i < monsterList.size(); i++) {
 			monsterList.get(i).update();
+			if(monsterList.get(i).isDead())
+				monsterList.remove(i);
 		}
 	}
 	

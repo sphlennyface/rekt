@@ -293,16 +293,24 @@ public abstract class Player {
 
 	public static void move() {
 		if (y < 2 * 64) {
+			face = Face.NORTH;
+			x = Framework.frameWidth / 2 - 32;
 			y = 10 * 64;
 		}
 		else if (y > 10 * 64) {
 			y = 64;
+			face = Face.SOUTH;
+			x = Framework.frameWidth / 2 - 32;
 		}
 		else if (x < 3 * 64) {
 			x = 14*64;
+			face = Face.WEST;
+			y = Framework.frameHeight / 2 - 32;
 		}
 		else {
 			x = 64;
+			face = Face.EAST;
+			y = Framework.frameHeight / 2 - 32;
 		}
 	}
 	
