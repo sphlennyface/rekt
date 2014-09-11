@@ -26,12 +26,19 @@ public class Timer {
 		DONE
 	};
 
-	public Timer(long gameTime, int Lenght, BufferedImage Image, int X, int Y){
+	public Timer(long gameTime, int Lenght, BufferedImage Image, double X, double Y){
 		_startTime = gameTime;
 		_endTime = gameTime + Lenght*1000000000;
 		_image = Image;
-		_x = X - (Image.getWidth()/2);
-		_y = Y - (Image.getHeight()/2);
+		_x = (int) (X - (Image.getWidth()/2));
+		_y = (int) (Y - (Image.getHeight()/2));
+	}
+	public Timer(long gameTime, double Lenght, BufferedImage Image, int XTile, int YTile){
+		_startTime = gameTime;
+		_endTime = gameTime + Lenght*1000000000;
+		_image = Image;
+		_x = XTile*64;
+		_y = YTile*64;
 	}
 	public Timer(){
 	}

@@ -1,5 +1,6 @@
 package pl.sphgames.rpg10;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.util.Collections;
 import java.lang.Math;
 import java.awt.Point;
@@ -25,12 +26,21 @@ public class Monster {
 		setPatrolPoints();		
 		putPlayerInPatrolPointOne();
 		putInAIArray();
+		widthHitBox = 45;
+		heightHitBox = 45;
 	}
 	
 	private void putInAIArray() {
 		AI.putMonsterInArray(this);
 	}
 	
+	public int getXPosition(){
+		return currentTileX;
+	}
+
+	public int getYPosition(){
+		return currentTileY;
+	}
 	private class PathPoint {
 		private int x;
 		private int y;
@@ -91,15 +101,19 @@ public class Monster {
 	private ArrayList<PatrolPoint> patrolPoints;
 	private ArrayList<PathPoint> pathPoints;
 	private int pX, pY;
-	private static int pX2, pY2;
 	private static int currentPatrolTarget;
 	private int currentTileX, currentTileY;
 	private boolean changedBehavior;
 	private CURRENTBEHAVIOR lastBehavior;
+	private int widthHitBox, heightHitBox;
 
 	private int temp;
 
-
+	public boolean isMonsterHit(Bullet b){
+		if(new Rectangle(x+(monsterImg.getWidth()/2-widthHitBox/2),y+(monsterImg.getHeight() - heightHitBox),widthHitBox,heightHitBox).contains(b.getCurrentLocation()))
+			return true;
+		else return false;
+	}
 	private enum CURRENTBEHAVIOR {
 		CHASING,
 		PATROLLING,
@@ -169,9 +183,8 @@ public class Monster {
 		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,1,2);
-
 		point.setDelay(1);
-
+		point.setDelay(1);
 		patrolPoints.add(point);
 		point = new PatrolPoint(10,5,3);
 		point.setDelay(1);
@@ -309,7 +322,7 @@ public class Monster {
 	
 	private void chase() {		
 		if(changedBehavior){
-		Timer t = new Timer(Framework.gameTime,1,arrow,x+(monsterImg.getWidth()/2),y+10);
+		Timer t = new Timer(Framework.gameTime,(double)1,arrow,x+(monsterImg.getWidth()/2),y+10);
 		Game.timerList.add(t);
 		}
 		changedBehavior=false;
@@ -395,6 +408,9 @@ public class Monster {
 	
 	public void Draw(Graphics2D g2d) {
 		g2d.drawImage(monsterImg, x, y, null);
+		g2d.drawRect(x+(monsterImg.getWidth()/2-widthHitBox/2),y+(monsterImg.getHeight() - heightHitBox),widthHitBox,heightHitBox);
+//		g2d.drawRect(x,y,widthHitBox,heightHitBox);
+
 	}
 	
 	
