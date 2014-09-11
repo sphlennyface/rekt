@@ -23,7 +23,6 @@ public class SplashScreen {
 		level = levSwitch;
 		ah_ = ah;
 		alpha = alpha_;
-		tempAlpha = alpha_;
 		Game.addFuckingSplash(this);
 	}
 	
@@ -51,7 +50,6 @@ public class SplashScreen {
 	
 	
 	public void update() {
-		alpha = tempAlpha;
 		if (fading)
     		alpha += 0.05f;
     	else
@@ -64,7 +62,6 @@ public class SplashScreen {
 		else if (alpha <= 0.0f)
 			alpha = 0.0f;
 
-		tempAlpha = alpha;
 		frames++;
 
 		if (frames == 20 && level == true) {
